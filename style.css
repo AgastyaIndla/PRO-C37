@@ -4,4 +4,7 @@ html, body {
 }
 canvas {
   display: block;
+  border:10px solid violet;
+  margin-right: auto;
+  margin-left: auto;
 }

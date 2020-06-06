@@ -2,15 +2,18 @@ var database;
 
 var drawing = [];
 var currentPath = [];
-var form;
 var isDrawing=false;
 
 function setup(){
-  canvas = createCanvas(1000,600);
+  canvas = createCanvas(1400,650);
+  database = firebase.database();
+
   canvas.mousePressed(startPath);
   canvas.mouseReleased(endPath);
 
-  var form = new Form();
+  form=new Form();
+  form.display();
+
 }
 
 function startPath() {
@@ -23,11 +26,10 @@ function endPath(){
   isDrawing=false;
 }
 
-
 function draw() {
-  background(0,100);
+  background("black");
   
-  if(mouseIsPressed) {
+  if(isDrawing) {
     var point = {
      x: mouseX,
      y: mouseY 
@@ -49,4 +51,34 @@ function draw() {
    endShape();
   }
 
+  form.button.mousePressed(()=>{
+    saveDrawing();
+  });
+
+  form.button2.mousePressed(()=>{
+    clearDrawing();
+  });
+
 }
+
+  function saveDrawing(){
+    var ref = database.ref('drawing');
+
+    var data = {
+       name:"agastya",
+       drawing:drawing 
+      } 
+      var result = ref.push(data,dataSent);
+
+      console.log(status);
+
+      function dataSent(status){
+        console.log(status);
+      }
+   }
+
+   function clearDrawing(){
+      drawing=[];
+      var ref = database.ref('drawing');
+      ref.remove();
+   }
